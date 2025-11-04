@@ -1,6 +1,12 @@
 // pages/create/create.ts
 import Toast from 'tdesign-miniprogram/toast/index';
 
+interface TaskInfo {
+  taskId: string;
+  recordId: string;
+  status: string;
+}
+
 Page({
   data: {
     prompt: '',
@@ -10,13 +16,53 @@ Page({
     examplePrompts: [
       '一只可爱的柴犬，在樱花树下奔跑，动漫风格，温暖的春天氛围',
       '未来城市的夜景，飞行汽车穿梭，赛博朋克风格，霓虹灯光效果',
+      '一间有着精致窗户的花店，漂亮的木质门，摆放着花朵',
+      '雪山之巅的孤独旅人，背着登山包，俯瞰云海，壮丽的自然风光',
     ],
     generatedImage: '',
     generating: false,
+    taskInfo: null as TaskInfo | null,
+    pollingTimer: null as number | null,
+    generationStatus: '', // PENDING, RUNNING, SUCCEEDED, FAILED
   },
 
   onLoad() {
     // 页面加载
+    this.checkLoginStatus();
+  },
+
+  onUnload() {
+    // 页面卸载时清除轮询
+    this.clearPolling();
+  },
+
+  // 检查登录状态
+  checkLoginStatus() {
+    const openid = wx.getStorageSync('openid');
+    if (!openid) {
+      wx.showModal({
+        title: '提示',
+        content: '请先登录后再使用AI创作功能',
+        confirmText: '去登录',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/profile/profile',
+            });
+          }
+        },
+      });
+    }
+  },
+
+  // 清除轮询定时器
+  clearPolling() {
+    if (this.data.pollingTimer) {
+      clearInterval(this.data.pollingTimer);
+      this.setData({ pollingTimer: null });
+    }
+    // 清除 loading 标记
+    wx.removeStorageSync('isShowingLoading');
   },
 
   // 提示词输入变化
@@ -36,9 +82,18 @@ Page({
   // 选择风格
   onStyleSelect(e: any) {
     const style = e.currentTarget.dataset.style;
+    const selectedStyle = this.data.selectedStyle === style ? '' : style;
+
     this.setData({
-      selectedStyle: this.data.selectedStyle === style ? '' : style,
+      selectedStyle: selectedStyle,
     });
+
+    // 如果选择了风格，自动添加到提示词中
+    if (selectedStyle && this.data.prompt && !this.data.prompt.includes(selectedStyle)) {
+      this.setData({
+        prompt: `${this.data.prompt}，${selectedStyle}风格`,
+      });
+    }
   },
 
   // 选择示例提示词
@@ -62,7 +117,6 @@ Page({
       context: this,
       selector: '#t-toast',
       message: '更多示例即将上线',
-      theme: 'info',
     });
   },
 
@@ -78,42 +132,180 @@ Page({
       return;
     }
 
-    this.setData({ generating: true });
+    // 检查登录状态
+    const openid = wx.getStorageSync('openid');
+    if (!openid) {
+      this.checkLoginStatus();
+      return;
+    }
+
+    this.setData({
+      generating: true,
+      generationStatus: 'PENDING',
+    });
+
+    wx.showLoading({ title: '创建任务中...' });
 
     try {
-      // TODO: 调用实际的 AI 生成 API
-      // 模拟生成延迟
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
-      // 模拟生成的图片（实际应该是 API 返回的图片 URL）
-      const mockImageUrl = 'https://via.placeholder.com/800';
-
-      this.setData({
-        generatedImage: mockImageUrl,
-        generating: false,
+      // 调用云函数创建任务
+      const createRes = await wx.cloud.callFunction({
+        name: 'textToImage',
+        data: {
+          action: 'createTask',
+          prompt: this.data.prompt,
+          negativePrompt: this.data.negativePrompt || undefined,
+          size: '1024*1024',
+          n: 1,
+        },
       });
 
-      Toast({
-        context: this,
-        selector: '#t-toast',
-        message: '生成成功！',
-        theme: 'success',
-      });
+      wx.hideLoading();
 
-      // 滚动到顶部查看生成结果
-      wx.pageScrollTo({
-        scrollTop: 0,
-        duration: 300,
-      });
-    } catch (error) {
+      const result = createRes.result as any;
+      if (result && result.success) {
+        const taskInfo: TaskInfo = {
+          taskId: result.data.taskId,
+          recordId: result.data.recordId,
+          status: result.data.status,
+        };
+
+        this.setData({
+          taskInfo: taskInfo,
+          generationStatus: taskInfo.status,
+        });
+
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '任务创建成功，正在生成...',
+          theme: 'success',
+          duration: 2000,
+        });
+
+        // 开始轮询查询结果
+        this.startPolling();
+      } else {
+        throw new Error((result && result.errMsg) || '创建任务失败');
+      }
+    } catch (error: any) {
+      wx.hideLoading();
       console.error('生成失败:', error);
+
       Toast({
         context: this,
         selector: '#t-toast',
-        message: '生成失败，请重试',
+        message: error.message || '生成失败，请重试',
         theme: 'error',
       });
-      this.setData({ generating: false });
+
+      this.setData({
+        generating: false,
+        generationStatus: '',
+      });
+    }
+  },
+
+  // 开始轮询查询结果
+  startPolling() {
+    // 清除之前的轮询
+    this.clearPolling();
+
+    // 立即查询一次
+    this.queryTaskResult();
+
+    // 每10秒查询一次
+    const timer = setInterval(() => {
+      this.queryTaskResult();
+    }, 10000) as unknown as number;
+
+    this.setData({ pollingTimer: timer });
+  },
+
+  // 查询任务结果
+  async queryTaskResult() {
+    if (!this.data.taskInfo) {
+      return;
+    }
+
+    try {
+      const resultRes = await wx.cloud.callFunction({
+        name: 'textToImage',
+        data: {
+          action: 'getResult',
+          taskId: this.data.taskInfo.taskId,
+          recordId: this.data.taskInfo.recordId,
+        },
+      });
+
+      const result = resultRes.result as any;
+      if (result && result.success) {
+        const { status, results } = result.data;
+
+        this.setData({
+          generationStatus: status,
+        });
+
+        if (status === 'SUCCEEDED') {
+          // 生成成功
+          this.clearPolling();
+          wx.hideLoading(); // 隐藏加载提示
+
+          if (results && results.length > 0) {
+            // 直接使用阿里云返回的图片URL（24小时有效）
+            const imageUrl = results[0].url;
+
+            this.setData({
+              generatedImage: imageUrl,
+              generating: false,
+            });
+
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: '生成成功！',
+              theme: 'success',
+            });
+
+            // 滚动到顶部查看生成结果
+            wx.pageScrollTo({
+              scrollTop: 0,
+              duration: 300,
+            });
+          }
+        } else if (status === 'FAILED') {
+          // 生成失败
+          this.clearPolling();
+          wx.hideLoading(); // 隐藏加载提示
+
+          this.setData({
+            generating: false,
+          });
+
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: '生成失败，请重试',
+            theme: 'error',
+          });
+        } else if (status === 'RUNNING') {
+          // 正在生成 - 只在第一次显示 loading
+          if (!wx.getStorageSync('isShowingLoading')) {
+            wx.setStorageSync('isShowingLoading', true);
+            wx.showLoading({ title: '正在生成中...' });
+          }
+        } else if (status === 'PENDING') {
+          // 排队中
+          if (!wx.getStorageSync('isShowingLoading')) {
+            wx.setStorageSync('isShowingLoading', true);
+            wx.showLoading({ title: '排队中...' });
+          }
+        }
+      } else {
+        console.error('查询结果失败:', result && result.errMsg);
+      }
+    } catch (error) {
+      console.error('查询任务结果失败:', error);
+      // 继续轮询，不中断
     }
   },
 
@@ -124,7 +316,16 @@ Page({
       content: '确定要重新生成吗？当前图片将被替换',
       success: (res) => {
         if (res.confirm) {
-          this.setData({ generatedImage: '' });
+          // 清除轮询和当前结果
+          this.clearPolling();
+
+          this.setData({
+            generatedImage: '',
+            taskInfo: null,
+            generationStatus: '',
+          });
+
+          // 重新生成
           this.onGenerate();
         }
       },
@@ -133,45 +334,68 @@ Page({
 
   // 发布到画廊
   async onPublish() {
-    wx.showLoading({ title: '发布中...' });
-
-    try {
-      // TODO: 调用发布 API
-      // 模拟发布延迟
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      wx.hideLoading();
-      
+    if (!this.data.generatedImage) {
       Toast({
         context: this,
         selector: '#t-toast',
-        message: '发布成功！',
-        theme: 'success',
-        duration: 2000,
+        message: '请先生成图片',
+        theme: 'warning',
+      });
+      return;
+    }
+
+    wx.showLoading({ title: '发布中...' });
+
+    try {
+      // 调用云函数发布作品
+      const publishRes = await wx.cloud.callFunction({
+        name: 'textToImage',
+        data: {
+          action: 'publishWork',
+          imageUrl: this.data.generatedImage,
+          prompt: this.data.prompt,
+          taskId: this.data.taskInfo?.taskId || '',
+        },
       });
 
-      // 延迟跳转，让用户看到成功提示
-      setTimeout(() => {
-        // 返回首页并刷新
-        wx.switchTab({
-          url: '/pages/home/home',
-          success: () => {
-            // 通知首页刷新数据
-            const pages = getCurrentPages();
-            const homePage = pages.find(page => page.route === 'pages/home/home');
-            if (homePage) {
-              (homePage as any).setData({ shouldRefresh: true });
-            }
-          },
+      wx.hideLoading();
+
+      const result = publishRes.result as any;
+      if (result && result.success) {
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '发布成功！',
+          theme: 'success',
+          duration: 2000,
         });
-      }, 1000);
-    } catch (error) {
+
+        // 清空当前生成的图片和状态
+        this.setData({
+          generatedImage: '',
+          prompt: '',
+          negativePrompt: '',
+          selectedStyle: '',
+          taskInfo: null,
+          generationStatus: '',
+        });
+
+        // 延迟跳转到【我的】页面查看作品
+        setTimeout(() => {
+          wx.switchTab({
+            url: '/pages/profile/profile',
+          });
+        }, 1000);
+      } else {
+        throw new Error((result && result.errMsg) || '发布失败');
+      }
+    } catch (error: any) {
       wx.hideLoading();
       console.error('发布失败:', error);
       Toast({
         context: this,
         selector: '#t-toast',
-        message: '发布失败，请重试',
+        message: error.message || '发布失败，请重试',
         theme: 'error',
       });
     }

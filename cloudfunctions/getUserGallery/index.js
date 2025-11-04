@@ -29,8 +29,8 @@ exports.main = async (event, context) => {
     
     const userInfo = userQuery.data[0]
     
-    // 获取用户的作品
-    const worksQuery = await db.collection('works')
+    // 获取用户发布的作品（从 images 集合）
+    const imagesQuery = await db.collection('images')
       .where({
         userId: userInfo._id
       })
@@ -39,9 +39,37 @@ exports.main = async (event, context) => {
       .limit(limit)
       .get()
     
+    // 获取云存储临时链接
+    const images = imagesQuery.data
+    if (images.length > 0) {
+      const fileList = images.map(img => img.imageUrl).filter(url => url)
+      
+      if (fileList.length > 0) {
+        try {
+          const tempUrlRes = await cloud.getTempFileURL({
+            fileList: fileList
+          })
+          
+          // 将临时链接映射回图片数据
+          const fileMap = {}
+          tempUrlRes.fileList.forEach(file => {
+            fileMap[file.fileID] = file.tempFileURL
+          })
+          
+          images.forEach(img => {
+            if (img.imageUrl && fileMap[img.imageUrl]) {
+              img.tempImageUrl = fileMap[img.imageUrl]
+            }
+          })
+        } catch (error) {
+          console.error('获取临时链接失败:', error)
+        }
+      }
+    }
+    
     return {
       success: true,
-      data: worksQuery.data
+      data: images
     }
   } catch (error) {
     console.error('获取用户画廊失败:', error)

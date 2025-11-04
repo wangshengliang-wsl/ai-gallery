@@ -22,6 +22,12 @@
         "selectedIconPath": "assets/icons/home-active.png"
       },
       {
+        "pagePath": "pages/create/create",
+        "text": "创作",
+        "iconPath": "assets/icons/create.png",
+        "selectedIconPath": "assets/icons/create-active.png"
+      },
+      {
         "pagePath": "pages/profile/profile",
         "text": "我的",
         "iconPath": "assets/icons/profile.png",

@@ -121,7 +121,8 @@ Page({
         const galleryData = galleryRes.result.data || [];
         const personalGallery = galleryData.map((item: any) => ({
           id: item._id,
-          imageUrl: item.imageUrl || '',
+          imageUrl: item.tempImageUrl || item.imageUrl || '',
+          prompt: item.prompt || '',
         }));
 
         this.setData({
