@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>首页 - AI画廊</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .gallery-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+    }
+
+    .fab-button {
+      position: fixed;
+      bottom: 80px;
+      right: 16px;
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
+      background: #0052d9;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 4px 12px rgba(0, 82, 217, 0.4);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .fab-button:hover {
+      transform: scale(1.05);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: white;
+      border-top: 1px solid #e7e7e7;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: #0052d9;
+    }
+
+    .nav-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="h-screen flex flex-col overflow-hidden">
+    <!-- Header -->
+    <div class="bg-white px-4 py-3 border-b border-gray-100 flex-shrink-0">
+      <h1 class="text-xl font-semibold text-gray-800">AI画廊</h1>
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="flex-1 overflow-y-auto px-4 py-4 pb-20">
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Gallery Item 1 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">一只可爱的橘猫，坐在窗台上看着窗外的雨景，温馨的室内光线</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-blue-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小明</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 2 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">未来城市的夜景，赛博朋克风格，霓虹灯闪烁</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-green-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小红</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 3 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">宁静的海边日落，海鸥在天空飞翔，写实风格</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-purple-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小刚</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 4 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">梦幻的森林场景，萤火虫飞舞，月光透过树叶</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-yellow-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小美</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 5 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">动漫风格的少女，站在樱花树下，春天的气息</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-pink-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小花</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gallery Item 6 -->
+        <div class="gallery-item">
+          <div class="gallery-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+            <span>AI 生成图片</span>
+          </div>
+          <div class="p-3">
+            <p class="text-sm text-gray-700 line-clamp-2">宇宙星空，流星划过，科幻电影感</p>
+            <div class="flex items-center mt-2">
+              <div class="w-6 h-6 rounded-full bg-indigo-500"></div>
+              <span class="text-xs text-gray-500 ml-2">小李</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading More -->
+      <div class="text-center py-4 text-gray-400 text-sm">
+        下拉加载更多...
+      </div>
+    </div>
+
+    <!-- FAB Button -->
+    <div class="fab-button">+</div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <div class="nav-item active">
+        <div class="nav-icon">🏠</div>
+        <div>首页</div>
+      </div>
+      <div class="nav-item">
+        <div class="nav-icon">👤</div>
+        <div>我的</div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

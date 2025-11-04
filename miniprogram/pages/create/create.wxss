@@ -1,0 +1,145 @@
+/* pages/create/create.wxss */
+.create-container {
+  width: 100%;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.create-scroll {
+  width: 100%;
+  height: 100%;
+}
+
+.create-content {
+  padding: 24rpx;
+  padding-bottom: 40rpx;
+}
+
+/* 卡片样式 */
+.section-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 24rpx;
+}
+
+.optional-text {
+  font-size: 24rpx;
+  color: #999999;
+  font-weight: 400;
+  margin-left: 8rpx;
+}
+
+/* 生成结果 */
+.result-section {
+  margin-bottom: 24rpx;
+}
+
+.generated-image {
+  width: 100%;
+  height: 686rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+/* 提示词输入 */
+.prompt-textarea {
+  width: 100%;
+}
+
+/* 风格标签 */
+.style-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.tag-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 32rpx;
+  background: #f3f3f3;
+  color: #666666;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  transition: all 0.3s;
+}
+
+.tag-item.active {
+  background: #0052d9;
+  color: #ffffff;
+}
+
+/* 反向提示词 */
+.negative-input {
+  width: 100%;
+}
+
+/* 灵感示例 */
+.view-more {
+  font-size: 24rpx;
+  color: #0052d9;
+}
+
+.example-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.example-item {
+  padding: 24rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  margin-top: 32rpx;
+}
+
+.generate-button {
+  background: #0052d9;
+}
+
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.publish-button {
+  background: #07c160;
+}
+
+.regenerate-button {
+  background: #ffffff;
+  color: #0052d9;
+  border: 1px solid #0052d9;
+}
+
+.result-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+

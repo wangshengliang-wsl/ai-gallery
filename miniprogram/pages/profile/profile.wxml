@@ -1,0 +1,141 @@
+<!--pages/profile/profile.wxml-->
+<view class="profile-container">
+  <scroll-view class="profile-scroll" scroll-y>
+    
+    <!-- 未登录状态 -->
+    <view wx:if="{{!isLoggedIn}}" class="login-section">
+      <view class="login-card">
+        <view class="avatar-placeholder">
+          <text class="avatar-icon">👤</text>
+        </view>
+        <t-button 
+          class="login-button"
+          theme="success"
+          size="large"
+          bind:tap="onLogin"
+        >
+          微信一键登录
+        </t-button>
+        <text class="login-tip">登录后可查看个人画廊和创作历史</text>
+      </view>
+    </view>
+
+    <!-- 已登录状态 -->
+    <view wx:else>
+      <!-- 用户信息 -->
+      <view class="user-info-section">
+        <view class="user-header">
+          <view class="avatar-wrapper">
+            <t-avatar 
+              size="large" 
+              image="{{userInfo.avatar}}"
+            />
+            <view class="avatar-edit-btn" bindtap="onEditAvatar">
+              <t-icon name="edit" size="28rpx" color="#fff" />
+            </view>
+          </view>
+          <view class="user-details">
+            <text class="user-name">{{userInfo.nickname}}</text>
+            <text class="user-stats">已创作 {{userInfo.worksCount}} 幅作品</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 数据统计 -->
+      <view class="stats-section">
+        <view class="stats-grid">
+          <view class="stat-item">
+            <text class="stat-value">{{userInfo.worksCount}}</text>
+            <text class="stat-label">作品</text>
+          </view>
+          <view class="stat-item stat-divider">
+            <text class="stat-value">{{userInfo.favoritesCount}}</text>
+            <text class="stat-label">收藏</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-value">{{userInfo.viewsCount}}</text>
+            <text class="stat-label">浏览</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 个人画廊 -->
+      <view class="gallery-section">
+        <view class="section-header">
+          <text class="section-title">个人画廊</text>
+          <text class="view-all" bindtap="onViewAllGallery">全部 ›</text>
+        </view>
+        <view class="personal-gallery">
+          <view 
+            class="gallery-item" 
+            wx:for="{{personalGallery}}" 
+            wx:key="id"
+            bindtap="onGalleryItemTap"
+            data-item="{{item}}"
+          >
+            <t-image 
+              class="gallery-image" 
+              src="{{item.imageUrl}}" 
+              mode="aspectFill"
+            />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 功能列表 -->
+    <view class="features-section">
+      <t-cell-group>
+        <t-cell 
+          title="个人画廊" 
+          left-icon="image" 
+          hover
+          arrow
+          bind:click="onGalleryClick"
+          note="{{isLoggedIn ? '' : '登录后查看'}}"
+        />
+        <t-cell 
+          title="创作历史" 
+          left-icon="edit" 
+          hover
+          arrow
+          bind:click="onHistoryClick"
+          note="{{isLoggedIn ? '' : '登录后查看'}}"
+        />
+        <t-cell 
+          title="我的收藏" 
+          left-icon="star" 
+          hover
+          arrow
+          bind:click="onFavoritesClick"
+          note="{{isLoggedIn ? '' : '登录后查看'}}"
+        />
+      </t-cell-group>
+    </view>
+
+    <!-- 设置 -->
+    <view class="settings-section">
+      <t-cell-group>
+        <t-cell 
+          title="设置" 
+          left-icon="setting" 
+          hover
+          arrow
+          bind:click="onSettingsClick"
+        />
+        <t-cell 
+          wx:if="{{isLoggedIn}}"
+          title="退出登录" 
+          left-icon="logout" 
+          hover
+          bind:click="onLogout"
+        />
+      </t-cell-group>
+    </view>
+
+  </scroll-view>
+</view>
+
+<!-- Toast 提示 -->
+<t-toast id="t-toast" />
+

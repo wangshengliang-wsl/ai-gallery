@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 - 已登录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e7e7e7;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #0052d9;
+        }
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .gallery-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .gallery-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="h-screen flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="bg-white px-4 py-3 border-b border-gray-100 flex-shrink-0">
+            <h1 class="text-xl font-semibold text-gray-800">我的</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto pb-20">
+            <!-- Profile Section -->
+            <div class="bg-white p-6">
+                <div class="flex items-center">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xl">
+                        W
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-lg font-semibold text-gray-800">微信昵称</h2>
+                        <p class="text-sm text-gray-500 mt-1">已创作 12 幅作品</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-white mt-4 p-4">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-semibold text-gray-800">12</div>
+                        <div class="text-sm text-gray-500 mt-1">作品</div>
+                    </div>
+                    <div class="border-l border-r border-gray-100">
+                        <div class="text-2xl font-semibold text-gray-800">28</div>
+                        <div class="text-sm text-gray-500 mt-1">收藏</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-semibold text-gray-800">156</div>
+                        <div class="text-sm text-gray-500 mt-1">浏览</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Gallery -->
+            <div class="mt-4 bg-white px-4 py-3">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-base font-semibold text-gray-800">个人画廊</h3>
+                    <span class="text-sm text-blue-500">全部 ›</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <span>作品1</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <span>作品2</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <span>作品3</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <span>作品4</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <span>作品5</span>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="gallery-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                            <span>作品6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features List -->
+            <div class="mt-4 bg-white">
+                <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">📝</span>
+                        <span class="text-gray-700">创作历史</span>
+                    </div>
+                    <span class="text-gray-400">›</span>
+                </div>
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">⭐</span>
+                        <span class="text-gray-700">我的收藏</span>
+                    </div>
+                    <span class="text-gray-400">›</span>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="mt-4 bg-white">
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">⚙️</span>
+                        <span class="text-gray-700">设置</span>
+                    </div>
+                    <span class="text-gray-400">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <div>首页</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">👤</div>
+                <div>我的</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

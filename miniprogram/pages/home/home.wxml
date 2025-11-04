@@ -1,0 +1,58 @@
+<!--pages/home/home.wxml-->
+<view class="home-container">
+  <!-- 画廊网格 -->
+  <scroll-view 
+    class="gallery-scroll" 
+    scroll-y 
+    bindscrolltolower="onLoadMore"
+    lower-threshold="100"
+  >
+    <view class="gallery-grid">
+      <view 
+        class="gallery-item" 
+        wx:for="{{galleryList}}" 
+        wx:key="id"
+        bindtap="onImageTap"
+        data-item="{{item}}"
+      >
+        <t-image 
+          class="gallery-image" 
+          src="{{item.imageUrl}}" 
+          mode="aspectFill"
+          loading="lazy"
+          error="加载失败"
+        />
+        <view class="gallery-info">
+          <text class="gallery-prompt">{{item.prompt}}</text>
+          <view class="gallery-author">
+            <t-avatar 
+              size="small" 
+              image="{{item.author.avatar}}"
+            />
+            <text class="author-name">{{item.author.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多提示 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <t-loading theme="circular" size="40rpx" text="加载中..." />
+    </view>
+
+    <view class="no-more" wx:if="{{noMore}}">
+      <text>没有更多了~</text>
+    </view>
+  </scroll-view>
+
+  <!-- 悬浮创建按钮 -->
+  <t-fab 
+    icon="add" 
+    bind:click="onCreateClick"
+    style="position: fixed; right: 32rpx; bottom: 160rpx;"
+  />
+</view>
+
+<!-- Toast 提示 -->
+<t-toast id="t-toast" />
+

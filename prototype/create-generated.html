@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建图片 - 已生成</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .tag-button {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #f3f3f3;
+            color: #666;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tag-button.active {
+            background: #0052d9;
+            color: white;
+        }
+        .generate-button {
+            width: 100%;
+            background: #f3f3f3;
+            color: #999;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: not-allowed;
+        }
+        .publish-button {
+            width: 100%;
+            background: #07c160;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+        .publish-button:hover {
+            background: #06a952;
+        }
+        .regenerate-button {
+            width: 100%;
+            background: white;
+            color: #0052d9;
+            padding: 14px;
+            border: 1px solid #0052d9;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+        .regenerate-button:hover {
+            background: #f0f5ff;
+        }
+        .generated-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="h-screen flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="bg-white px-4 py-3 border-b border-gray-100 flex items-center flex-shrink-0">
+            <span class="text-xl mr-3 cursor-pointer">‹</span>
+            <h1 class="text-xl font-semibold text-gray-800">创建图片</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-4">
+            <!-- Generated Image -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-3">生成结果</label>
+                <div class="generated-image">
+                    <div class="text-center">
+                        <div class="text-4xl mb-2">🎨</div>
+                        <div>AI 生成的图片</div>
+                        <div class="text-sm mt-2 opacity-80">一只可爱的橘猫</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prompt Display -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">使用的提示词</label>
+                <div class="p-3 bg-gray-50 rounded-lg text-sm text-gray-700">
+                    一只可爱的橘猫，坐在窗台上看着窗外的雨景，温馨的室内光线，写实风格
+                </div>
+            </div>
+
+            <!-- Style Tags (selected) -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-3">风格</label>
+                <div>
+                    <span class="tag-button active">写实</span>
+                    <span class="tag-button">动漫</span>
+                    <span class="tag-button">电影感</span>
+                    <span class="tag-button">梦幻</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="publish-button">
+                ✓ 发布到画廊
+            </div>
+            <div class="regenerate-button">
+                🔄 重新生成
+            </div>
+            <div class="text-center mt-3">
+                <span class="text-sm text-gray-400">生成成功！您可以发布或重新生成</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

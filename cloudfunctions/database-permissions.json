@@ -1,0 +1,17 @@
+{
+  "collections": {
+    "users": {
+      "read": true,
+      "write": "doc._openid == auth.openid"
+    },
+    "works": {
+      "read": "doc.isPublic == true || doc._openid == auth.openid",
+      "write": "doc._openid == auth.openid"
+    },
+    "favorites": {
+      "read": "doc._openid == auth.openid",
+      "write": "doc._openid == auth.openid"
+    }
+  }
+}
+

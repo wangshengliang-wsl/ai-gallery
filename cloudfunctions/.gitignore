@@ -1,0 +1,7 @@
+# 云函数依赖
+*/node_modules/
+*/package-lock.json
+
+# 云函数日志
+*.log
+

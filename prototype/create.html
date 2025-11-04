@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建图片</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .tag-button {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #f3f3f3;
+            color: #666;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tag-button:hover {
+            background: #e7e7e7;
+        }
+        .tag-button.active {
+            background: #0052d9;
+            color: white;
+        }
+        .generate-button {
+            width: 100%;
+            background: #0052d9;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .generate-button:hover {
+            background: #0041b3;
+        }
+        .publish-button {
+            width: 100%;
+            background: #07c160;
+            color: white;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+        .publish-button:hover {
+            background: #06a952;
+        }
+        .generated-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="h-screen flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="bg-white px-4 py-3 border-b border-gray-100 flex items-center flex-shrink-0">
+            <span class="text-xl mr-3 cursor-pointer">‹</span>
+            <h1 class="text-xl font-semibold text-gray-800">创建图片</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-4">
+            <!-- Prompt Input -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">描述你想要的画面</label>
+                <textarea 
+                    class="w-full p-3 border border-gray-200 rounded-lg resize-none focus:outline-none focus:border-blue-500" 
+                    rows="4" 
+                    placeholder="试试描述：主角 + 在哪里 + 做什么 + 像什么风格？&#10;例如：一只可爱的橘猫，坐在窗台上看着窗外的雨景，温馨的室内光线，写实风格"
+                ></textarea>
+            </div>
+
+            <!-- Style Tags -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-3">选择风格</label>
+                <div>
+                    <span class="tag-button">写实</span>
+                    <span class="tag-button">动漫</span>
+                    <span class="tag-button">电影感</span>
+                    <span class="tag-button">梦幻</span>
+                    <span class="tag-button">水彩</span>
+                    <span class="tag-button">油画</span>
+                    <span class="tag-button">赛博朋克</span>
+                    <span class="tag-button">极简</span>
+                </div>
+            </div>
+
+            <!-- Negative Prompt (Optional) -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    不想要的元素 
+                    <span class="text-xs text-gray-400">(可选)</span>
+                </label>
+                <input 
+                    type="text" 
+                    class="w-full p-3 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500" 
+                    placeholder="例如：不要文字、不要模糊、不要低质量"
+                />
+            </div>
+
+            <!-- Inspiration Examples -->
+            <div class="bg-white rounded-lg p-4 mb-4">
+                <div class="flex items-center justify-between mb-3">
+                    <label class="block text-sm font-medium text-gray-700">💡 灵感示例</label>
+                    <span class="text-xs text-blue-500 cursor-pointer">查看更多 ›</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="p-3 bg-gray-50 rounded-lg text-sm text-gray-700 cursor-pointer hover:bg-gray-100">
+                        "一只可爱的柴犬，在樱花树下奔跑，动漫风格，温暖的春天氛围"
+                    </div>
+                    <div class="p-3 bg-gray-50 rounded-lg text-sm text-gray-700 cursor-pointer hover:bg-gray-100">
+                        "未来城市的夜景，飞行汽车穿梭，赛博朋克风格，霓虹灯光效果"
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="generate-button">
+                🎨 生成图片
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

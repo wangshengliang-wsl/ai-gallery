@@ -1,0 +1,24 @@
+{
+  "name": "ai-gallery-miniprogram",
+  "version": "1.0.0",
+  "description": "AI画廊小程序 - 用文字创作AI艺术，分享你的创意画廊",
+  "scripts": {
+    "tsc": "tsc"
+  },
+  "keywords": [
+    "miniprogram",
+    "wechat",
+    "ai",
+    "gallery",
+    "tdesign",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "tdesign-miniprogram": "^1.11.0"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^2.8.3-1"
+  }
+}

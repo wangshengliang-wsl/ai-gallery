@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的 - 未登录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid #e7e7e7;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: #0052d9;
+        }
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        .login-button {
+            background: #07c160;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(7,193,96,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(7,193,96,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="h-screen flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="bg-white px-4 py-3 border-b border-gray-100 flex-shrink-0">
+            <h1 class="text-xl font-semibold text-gray-800">我的</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto pb-20">
+            <!-- Profile Section -->
+            <div class="bg-white p-6">
+                <div class="flex flex-col items-center py-8">
+                    <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-3xl mb-4">
+                        👤
+                    </div>
+                    <button class="login-button">
+                        微信一键登录
+                    </button>
+                    <p class="text-xs text-gray-400 mt-3">登录后可查看个人画廊和创作历史</p>
+                </div>
+            </div>
+
+            <!-- Features List -->
+            <div class="mt-4 bg-white">
+                <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">🎨</span>
+                        <span class="text-gray-700">个人画廊</span>
+                    </div>
+                    <div class="text-gray-400">
+                        <span class="text-sm">登录后查看</span>
+                        <span class="ml-2">›</span>
+                    </div>
+                </div>
+                <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">📝</span>
+                        <span class="text-gray-700">创作历史</span>
+                    </div>
+                    <div class="text-gray-400">
+                        <span class="text-sm">登录后查看</span>
+                        <span class="ml-2">›</span>
+                    </div>
+                </div>
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">⭐</span>
+                        <span class="text-gray-700">我的收藏</span>
+                    </div>
+                    <div class="text-gray-400">
+                        <span class="text-sm">登录后查看</span>
+                        <span class="ml-2">›</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="mt-4 bg-white">
+                <div class="px-4 py-3 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl mr-3">⚙️</span>
+                        <span class="text-gray-700">设置</span>
+                    </div>
+                    <span class="text-gray-400">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item">
+                <div class="nav-icon">🏠</div>
+                <div>首页</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">👤</div>
+                <div>我的</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

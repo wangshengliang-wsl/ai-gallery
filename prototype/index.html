@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI画廊 - 小程序原型</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 42px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .prototype-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(393px, 1fr));
+      gap: 40px;
+      justify-items: center;
+    }
+
+    .screen-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .screen-title {
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .iphone-frame {
+      width: 393px;
+      height: 852px;
+      background: #1a1a1a;
+      border-radius: 55px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 2px #2d2d2d,
+        0 20px 60px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .iphone-frame::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 30px;
+      background: #1a1a1a;
+      border-radius: 0 0 20px 20px;
+      z-index: 10;
+    }
+
+    .iphone-frame::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 6px;
+      background: #2d2d2d;
+      border-radius: 3px;
+      z-index: 11;
+    }
+
+    .screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 45px;
+      overflow: hidden;
+      background: white;
+      position: relative;
+    }
+
+    .screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .screen-label {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 1200px) {
+      .prototype-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      }
+
+      .iphone-frame {
+        transform: scale(0.9);
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .header p {
+        font-size: 16px;
+      }
+
+      .prototype-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .iphone-frame {
+        transform: scale(0.8);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🎨 AI画廊小程序</h1>
+      <p>原型设计 - 基于 TDesign 风格</p>
+    </div>
+
+    <!-- Prototype Grid -->
+    <div class="prototype-grid">
+      <!-- Screen 1: Home -->
+      <div class="screen-wrapper">
+        <div class="screen-title">1. 首页 - 画廊列表</div>
+        <div class="iphone-frame">
+          <div class="screen">
+            <iframe src="home.html" title="首页"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 2: Profile (Not Logged In) -->
+      <div class="screen-wrapper">
+        <div class="screen-title">2. 我的 - 未登录状态</div>
+        <div class="iphone-frame">
+          <div class="screen">
+            <iframe src="profile.html" title="我的-未登录"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Profile (Logged In) -->
+      <div class="screen-wrapper">
+        <div class="screen-title">3. 我的 - 已登录状态</div>
+        <div class="iphone-frame">
+          <div class="screen">
+            <iframe src="profile-logged.html" title="我的-已登录"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 4: Create -->
+      <div class="screen-wrapper">
+        <div class="screen-title">4. 创建图片 - 输入提示词</div>
+        <div class="iphone-frame">
+          <div class="screen">
+            <iframe src="create.html" title="创建图片"></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- Screen 5: Create Generated -->
+      <div class="screen-wrapper">
+        <div class="screen-title">5. 创建图片 - 生成结果</div>
+        <div class="iphone-frame">
+          <div class="screen">
+            <iframe src="create-generated.html" title="创建图片-已生成"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Info -->
+    <div class="text-center mt-16 text-white opacity-80">
+      <p class="text-sm">💡 使用 Tailwind CSS + TDesign 风格设计</p>
+      <p class="text-sm mt-2">📱 iPhone 15 Pro 屏幕规格 (393 x 852 pt)</p>
+    </div>
+  </div>
+
+  <script>
+    // Prevent iframe clicks from affecting parent
+    document.querySelectorAll('iframe').forEach(iframe => {
+      iframe.addEventListener('load', function () {
+        try {
+          // Try to prevent default behaviors in iframe
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          iframeDoc.addEventListener('click', function (e) {
+            // Allow normal interaction within iframe
+          });
+        } catch (e) {
+          // Cross-origin restriction, ignore
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

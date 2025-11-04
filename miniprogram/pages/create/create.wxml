@@ -1,0 +1,129 @@
+<!--pages/create/create.wxml-->
+<view class="create-container">
+  <scroll-view class="create-scroll" scroll-y>
+    <view class="create-content">
+      
+      <!-- 生成结果展示（生成成功后显示） -->
+      <view class="result-section" wx:if="{{generatedImage}}">
+        <view class="section-card">
+          <view class="section-title">生成结果</view>
+          <t-image 
+            class="generated-image" 
+            src="{{generatedImage}}" 
+            mode="aspectFill"
+          />
+        </view>
+      </view>
+
+      <!-- 提示词输入 -->
+      <view class="section-card">
+        <view class="section-title">描述你想要的画面</view>
+        <t-textarea
+          class="prompt-textarea"
+          value="{{prompt}}"
+          placeholder="试试描述：主角 + 在哪里 + 做什么 + 像什么风格？&#10;例如：一只可爱的橘猫，坐在窗台上看着窗外的雨景，温馨的室内光线，写实风格"
+          maxlength="500"
+          indicator
+          bind:change="onPromptChange"
+          disabled="{{generating}}"
+        />
+      </view>
+
+      <!-- 风格选择 -->
+      <view class="section-card">
+        <view class="section-title">选择风格</view>
+        <view class="style-tags">
+          <view 
+            class="tag-item {{selectedStyle === item ? 'active' : ''}}" 
+            wx:for="{{styleOptions}}" 
+            wx:key="index"
+            bindtap="onStyleSelect"
+            data-style="{{item}}"
+          >
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <!-- 反向提示词（可选） -->
+      <view class="section-card">
+        <view class="section-title">
+          不想要的元素
+          <text class="optional-text">（可选）</text>
+        </view>
+        <t-input
+          class="negative-input"
+          value="{{negativePrompt}}"
+          placeholder="例如：不要文字、不要模糊、不要低质量"
+          bind:change="onNegativePromptChange"
+          disabled="{{generating}}"
+        />
+      </view>
+
+      <!-- 灵感示例 -->
+      <view class="section-card">
+        <view class="section-header">
+          <view class="section-title">💡 灵感示例</view>
+          <text class="view-more" bindtap="onViewMoreExamples">查看更多 ›</text>
+        </view>
+        <view class="example-list">
+          <view 
+            class="example-item" 
+            wx:for="{{examplePrompts}}" 
+            wx:key="index"
+            bindtap="onExampleSelect"
+            data-prompt="{{item}}"
+          >
+            "{{item}}"
+          </view>
+        </view>
+      </view>
+
+      <!-- 操作按钮区域 -->
+      <view class="action-buttons">
+        <!-- 生成按钮 -->
+        <t-button 
+          wx:if="{{!generatedImage}}"
+          class="generate-button"
+          theme="primary"
+          size="large"
+          block
+          loading="{{generating}}"
+          disabled="{{!prompt || generating}}"
+          bind:tap="onGenerate"
+        >
+          <text wx:if="{{!generating}}">🎨 生成图片</text>
+          <text wx:else>生成中...</text>
+        </t-button>
+
+        <!-- 生成成功后的按钮 -->
+        <view wx:if="{{generatedImage}}" class="result-actions">
+          <t-button 
+            class="publish-button"
+            theme="success"
+            size="large"
+            block
+            bind:tap="onPublish"
+          >
+            ✓ 发布到画廊
+          </t-button>
+          <t-button 
+            class="regenerate-button"
+            theme="default"
+            size="large"
+            block
+            bind:tap="onRegenerate"
+          >
+            🔄 重新生成
+          </t-button>
+          <view class="result-tip">生成成功！您可以发布或重新生成</view>
+        </view>
+      </view>
+
+    </view>
+  </scroll-view>
+</view>
+
+<!-- Toast 提示 -->
+<t-toast id="t-toast" />
+
