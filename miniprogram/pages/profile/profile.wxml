@@ -35,7 +35,12 @@
             </view>
           </view>
           <view class="user-details">
-            <text class="user-name">{{userInfo.nickname}}</text>
+            <view class="user-name-wrapper">
+              <text class="user-name">{{userInfo.nickname}}</text>
+              <view class="name-edit-btn" bindtap="onEditNickname">
+                <t-icon name="edit" size="24rpx" color="#666" />
+              </view>
+            </view>
             <text class="user-stats">已创作 {{userInfo.worksCount}} 幅作品</text>
           </view>
         </view>

@@ -13,12 +13,13 @@ exports.main = async (event, context) => {
   
   try {
     const { OPENID } = wxContext
-    const { avatarUrl } = event
+    const { avatarUrl, nickname } = event
     
-    if (!avatarUrl) {
+    // 验证至少有一个要更新的字段
+    if (!avatarUrl && !nickname) {
       return {
         success: false,
-        errMsg: '头像URL不能为空'
+        errMsg: '请提供要更新的信息'
       }
     }
     
@@ -37,22 +38,37 @@ exports.main = async (event, context) => {
     const userInfo = userQuery.data[0]
     const now = new Date()
     
-    // 更新用户头像
-    await db.collection('users').doc(userInfo._id).update({
-      data: {
-        avatar: avatarUrl,
-        updatedAt: now
+    // 构建更新数据
+    const updateData = {
+      updatedAt: now
+    }
+    
+    if (avatarUrl) {
+      updateData.avatar = avatarUrl
+    }
+    
+    if (nickname) {
+      // 验证昵称长度
+      if (nickname.length > 20) {
+        return {
+          success: false,
+          errMsg: '昵称不能超过20个字符'
+        }
       }
+      updateData.nickname = nickname
+    }
+    
+    // 更新用户信息
+    await db.collection('users').doc(userInfo._id).update({
+      data: updateData
     })
     
     return {
       success: true,
-      data: {
-        avatar: avatarUrl
-      }
+      data: updateData
     }
   } catch (error) {
-    console.error('更新用户头像失败:', error)
+    console.error('更新用户信息失败:', error)
     return {
       success: false,
       errMsg: error.message

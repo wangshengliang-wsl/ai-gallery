@@ -332,6 +332,98 @@ Page({
     }
   },
 
+  // 编辑昵称
+  onEditNickname() {
+    const currentNickname = this.data.userInfo.nickname;
+    
+    wx.showModal({
+      title: '修改昵称',
+      content: '',
+      editable: true,
+      placeholderText: currentNickname,
+      success: async (res) => {
+        if (res.confirm && res.content) {
+          const newNickname = res.content.trim();
+          
+          if (!newNickname) {
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: '昵称不能为空',
+              theme: 'warning',
+            });
+            return;
+          }
+
+          if (newNickname === currentNickname) {
+            return;
+          }
+
+          if (newNickname.length > 20) {
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: '昵称不能超过20个字符',
+              theme: 'warning',
+            });
+            return;
+          }
+
+          await this.updateNickname(newNickname);
+        }
+      },
+    });
+  },
+
+  // 更新昵称
+  async updateNickname(newNickname: string) {
+    wx.showLoading({ title: '更新中...' });
+
+    try {
+      // 调用云函数更新昵称
+      const updateRes = await wx.cloud.callFunction({
+        name: 'updateUserAvatar',
+        data: {
+          nickname: newNickname,
+        },
+      });
+
+      wx.hideLoading();
+
+      const result = updateRes.result as any;
+      if (result && result.success) {
+        // 更新本地显示
+        this.setData({
+          'userInfo.nickname': newNickname,
+        });
+
+        // 更新本地存储
+        const userInfo = wx.getStorageSync('userInfo');
+        userInfo.nickname = newNickname;
+        wx.setStorageSync('userInfo', userInfo);
+
+        Toast({
+          context: this,
+          selector: '#t-toast',
+          message: '昵称更新成功',
+          theme: 'success',
+        });
+      } else {
+        throw new Error((result && result.errMsg) || '更新昵称失败');
+      }
+    } catch (error: any) {
+      wx.hideLoading();
+      console.error('更新昵称失败:', error);
+      
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: error.message || '更新昵称失败，请重试',
+        theme: 'error',
+      });
+    }
+  },
+
   // 查看全部画廊
   onViewAllGallery() {
     Toast({
