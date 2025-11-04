@@ -1,0 +1,11 @@
+{
+  "name": "textToImage",
+  "version": "1.0.0",
+  "description": "文生图云函数 - 通义万相",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "axios": "^1.6.0"
+  }
+}
+
